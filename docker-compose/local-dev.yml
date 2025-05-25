@@ -1,6 +1,6 @@
 services:
   flarum_db_local:
-    image: mariadb:lts # Or mysql:8.0
+    image: mariadb:lts
     container_name: my_flarum_db_local_instance
     restart: unless-stopped
     environment:
