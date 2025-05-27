@@ -1,4 +1,42 @@
 services:
+  flarum_app:
+    build:
+      context: ../flarum-dockerfile
+      args:
+        FLARUM_VERSION: ^1.8.0
+    container_name: my_flarum_app_local
+    volumes:
+      - flarum_code:/var/www/flarum
+      - ../../packages:/var/www/flarum/packages
+    environment:
+      DB_CONNECTION: ${FLARUM_DB_CONNECTION}
+      DB_HOST: ${FLARUM_DB_HOST}
+      DB_PORT: ${FLARUM_DB_PORT}
+      DB_DATABASE: ${FLARUM_DB_DATABASE}
+      DB_USERNAME: ${FLARUM_DB_USERNAME}
+      DB_PASSWORD: ${FLARUM_DB_PASSWORD}
+      DB_PREFIX: ${FLARUM_DB_PREFIX}
+      FLARUM_URL: ${FLARUM_URL}
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
+    depends_on:
+      - flarum_db_local
+    networks:
+      - flarum_network
+
+  flarum_web:
+    image: nginx:alpine
+    container_name: my_flarum_web_local
+    ports:
+      - "${FLARUM_URL_PORT:-8080}:80"
+    volumes:
+      - flarum_code:/var/www/flarum
+      - ../nginx_config/nginx_flarum.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - flarum_app
+    networks:
+      - flarum_network
+
   flarum_db_local:
     image: mariadb:lts
     container_name: my_flarum_db_local_instance
@@ -26,9 +64,23 @@ services:
       - flarum_db_local
     networks:
       - flarum_network
+  
+  ai_backend:
+    build:
+      context: ../../forum-ai-backend
+    container_name: my_ai_backend_local
+    volumes:
+      - ../../forum-ai-backend:/usr/src/app
+    ports:
+      - "5001:5000"
+    environment:
+      FLASK_ENV: development
+    networks:
+      - flarum_network
 
 volumes:
   flarum_db_local_data: # Persists Flarum database data
+  flarum_code:
 
 networks:
   flarum_network:
