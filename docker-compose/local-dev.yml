@@ -75,6 +75,7 @@ services:
       - "5001:5000"
     environment:
       FLASK_ENV: development
+      FLASK_DEBUG: '1'
     networks:
       - flarum_network
 
