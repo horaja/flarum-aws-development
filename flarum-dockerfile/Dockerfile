@@ -33,7 +33,7 @@ RUN composer create-project flarum/flarum . "${FLARUM_VERSION}" --stability=stab
 
 RUN chown -R www-data:www-data /var/www/flarum
 
-COPY ./entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+COPY ./entrypoint2.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE 9000
