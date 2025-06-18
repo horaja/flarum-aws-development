@@ -19,6 +19,7 @@ services:
       FLARUM_URL: ${FLARUM_URL}
       APP_ENV: ${APP_ENV}
       APP_DEBUG: ${APP_DEBUG}
+      QUEUE_CONNECTION: database
     depends_on:
       - flarum_db_local
     networks:
