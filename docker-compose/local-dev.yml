@@ -19,12 +19,37 @@ services:
       FLARUM_URL: ${FLARUM_URL}
       APP_ENV: ${APP_ENV}
       APP_DEBUG: ${APP_DEBUG}
-      QUEUE_CONNECTION: database
     depends_on:
       - flarum_db_local
     networks:
       - flarum_network
-
+  
+  flarum_scheduler:
+    build:
+      context: ../flarum-dockerfile
+      args:
+        FLARUM_VERSION: ^1.8.0
+    container_name: my_flarum_scheduler_local
+    command: sh -c "while true; do php flarum schedule:run; sleep 60; done"
+    volumes:
+      - flarum_code:/var/www/flarum
+      - ../../packages:/var/www/flarum/packages
+    environment:
+      DB_CONNECTION: ${FLARUM_DB_CONNECTION}
+      DB_HOST: ${FLARUM_DB_HOST}
+      DB_PORT: ${FLARUM_DB_PORT}
+      DB_DATABASE: ${FLARUM_DB_DATABASE}
+      DB_USERNAME: ${FLARUM_DB_USERNAME}
+      DB_PASSWORD: ${FLARUM_DB_PASSWORD}
+      DB_PREFIX: ${FLARUM_DB_PREFIX}
+      FLARUM_URL: ${FLARUM_URL}
+      APP_ENV: ${APP_ENV}
+      APP_DEBUG: ${APP_DEBUG}
+    depends_on:
+      - flarum_app
+    networks:
+      - flarum_network
+    
   flarum_web:
     image: nginx:alpine
     container_name: my_flarum_web_local

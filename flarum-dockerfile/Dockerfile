@@ -31,6 +31,8 @@ WORKDIR /var/www/flarum
 
 RUN composer create-project flarum/flarum . "${FLARUM_VERSION}" --stability=stable --remove-vcs --no-progress --no-interaction --prefer-dist --no-plugins
 
+RUN composer config repositories.local path "packages/*"
+
 RUN chown -R www-data:www-data /var/www/flarum
 
 COPY ./entrypoint.sh /usr/local/bin/docker-entrypoint.sh
