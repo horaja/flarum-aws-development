@@ -6,7 +6,7 @@ It uses Docker Compose to orchestrate a multi-container setup that includes the 
 
 ## Project Architecture
 
-This project is composed of three separate repositories that work together:
+This project is composed of three separate repositories that work together (all repositories can be found on my profile):
 
 1.  **`flarum-aws-development` (This Repo):** Contains the Docker and Docker Compose files to build and run the entire application stack.
 2.  **`flarum-ext-ai-tagger`:** A Flarum extension that triggers the AI tagging process.
